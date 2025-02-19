@@ -21,7 +21,6 @@ $app = Application::configure(basePath: dirname(__DIR__))
              'auth' => \App\Http\Middleware\Authenticate::class,
          ]);
 
-         // Usuń lub zmień tutaj
          $middleware->alias([
             'jwt.auth' => \App\Http\Middleware\JwtMiddleware::class,
          ]);
@@ -36,7 +35,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
             });
     })->create();
 
-// Zarejestruj alias middleware bez kropki:
+
 $app->router->aliasMiddleware('authapi', \Tymon\JWTAuth\Http\Middleware\Authenticate::class);
 
 return $app;

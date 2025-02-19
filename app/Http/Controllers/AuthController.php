@@ -30,7 +30,7 @@ class AuthController extends Controller
         $patient = Patient::where('name', $nameSurname[0])
                   ->where('surname', $nameSurname[1])
                   ->first();
-// dd(explode(' ', $login)[0]);
+
         if (!$patient || $patient->birth_date !== $password) {
             Log::info('Invalid login attempt', ['login' => $login, 'name' => $nameSurname[0], 'surname' => $nameSurname[1], 'password' => $password, 'patient' => $patient ?? null]);
             return response()->json(['error' => 'Unauthorized'], 401);

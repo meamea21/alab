@@ -11,3 +11,7 @@ use App\Http\Controllers\AuthController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/results', [AuthController::class, 'results'])->middleware('authapi');
+Route::post('/logout', function (Request $request) {
+    $request->user()->token()->revoke();
+    return response()->json(['message' => 'Successfully logged out']);
+})->middleware('authapi');
