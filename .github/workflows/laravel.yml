@@ -32,6 +32,8 @@ jobs:
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Generate key
       run: php artisan key:generate
+    - name: Generate JWT secret
+      run: php artisan jwt:secret
     - name: Migrate DB
       env:
           DB_CONNECTION: pgsql
@@ -60,4 +62,5 @@ jobs:
         DB_DATABASE: alab
         DB_USERNAME: postgres
         DB_PASSWORD: admin
+        JWT_SECRET: testing_secret
       run: vendor/bin/phpunit
