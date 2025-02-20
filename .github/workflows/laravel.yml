@@ -63,4 +63,10 @@ jobs:
         DB_USERNAME: postgres
         DB_PASSWORD: admin
         JWT_SECRET: testing_secret
-      run: vendor/bin/phpunit
+      run: vendor/bin/phpunit --testdox --log-junit test-results.xml
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: test-results
+        path: test-results.xml
