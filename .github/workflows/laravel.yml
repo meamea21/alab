@@ -35,7 +35,7 @@ jobs:
     - name: Migrate DB
       run: php artisan migrate
     - name: Import patients
-      run: php artisan artisan app:import-patient-data storage/app/private/results.csv
+      run: php artisan app:import-patient-data storage/app/private/results.csv
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
     - name: Create Database
