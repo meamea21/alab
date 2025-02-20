@@ -32,12 +32,28 @@ jobs:
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Generate key
       run: php artisan key:generate
+    - name: Generate JWT secret
+      run: php artisan jwt:secret
+    - name: Migrate DB
+      env:
+          DB_CONNECTION: pgsql
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_DATABASE: alab
+          DB_USERNAME: postgres
+          DB_PASSWORD: admin
+      run: php artisan migrate --force
+    - name: Import patients
+      env:
+          DB_CONNECTION: pgsql
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_DATABASE: alab
+          DB_USERNAME: postgres
+          DB_PASSWORD: admin
+      run: php artisan app:import-patient-data storage/app/private/results.csv
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
-    - name: Create Database
-      run: |
-        mkdir -p database
-        touch database/database.sqlite
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: pgsql
@@ -46,4 +62,11 @@ jobs:
         DB_DATABASE: alab
         DB_USERNAME: postgres
         DB_PASSWORD: admin
-      run: vendor/bin/phpunit
+        JWT_SECRET: testing_secret
+      run: vendor/bin/phpunit --testdox --log-junit test-results.xml
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: test-results.xml
